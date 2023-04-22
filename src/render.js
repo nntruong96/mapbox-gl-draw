@@ -34,6 +34,11 @@ export default function render() {
   function renderFeature(id, source) {
     const feature = store.get(id);
     const featureInternal = feature.internal(mode);
+    if (source === "hot") {
+      store.ctx.map.fire(Constants.events.POLYGON_MOVING, {
+        coordinates: featureInternal?.geometry?.coordinates[0],
+      });
+    }
     store.ctx.events.currentModeRender(featureInternal, (geojson) => {
       store.sources[source].push(geojson);
     });
